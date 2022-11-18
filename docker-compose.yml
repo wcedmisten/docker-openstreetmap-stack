@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  tile-server:
+    container_name: tile-server
+    image:
+      overv/openstreetmap-tile-server
+    volumes:
+      - osm-data:/data/database/
+      - osm-tiles:/data/tiles/
+      - ./run-postgresql.conf:/etc/postgresql/14/main/postgresql.custom.conf.tmpl
+    shm_size: "5g"
+    ports:
+      - "8080:80"
+    environment:
+      - THREADS=16
+      - ALLOW_CORS=enabled
+      - UPDATES=enabled
+    command: "run"
+
+  valhalla:
+    container_name: valhalla
+    image: valhalla/valhalla:run-latest
+    ports:
+      - "8002:8002"
+    volumes:
+      - valhalla-data:/data/valhalla
+    command: "valhalla_service /data/valhalla/valhalla.json 1"
+
+  nominatim:
+    container_name: nominatim
+    image: mediagis/nominatim:4.1
+    ports:
+      - "8010:8080"
+    volumes:
+      - nominatim-data:/var/lib/postgresql/14/main
+      - ./osm-pbf/region.osm.pbf:/nominatim/data/region.osm.pbf
+    environment:
+      - PBF_PATH=/nominatim/data/region.osm.pbf
+      # only import admin boundaries and places. cuts down the DB size by a LOT
+      - IMPORT_STYLE=admin
+
+  demo:
+    container_name: maps-demo
+    build:
+      context: valhalla-app
+      dockerfile: demo.dockerfile
+    ports: 
+      - "8020:80"
+
+volumes:
+  osm-data:
+    external: true
+  osm-tiles:
+    external: true
+  valhalla-data:
+    external: true
+  nominatim-data:
+    external: true
+
