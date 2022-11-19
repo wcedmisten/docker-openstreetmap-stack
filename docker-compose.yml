@@ -30,6 +30,7 @@ services:
   nominatim:
     container_name: nominatim
     image: mediagis/nominatim:4.1
+    shm_size: "5g"
     ports:
       - "8010:8080"
     volumes:
@@ -38,7 +39,7 @@ services:
     environment:
       - PBF_PATH=/nominatim/data/region.osm.pbf
       # only import admin boundaries and places. cuts down the DB size by a LOT
-      - IMPORT_STYLE=admin
+      - IMPORT_STYLE=full
 
   demo:
     container_name: maps-demo
