@@ -6,6 +6,7 @@ Currently running at https://map-demo.wcedmisten.dev
 
 ```
 git clone git@github.com:wcedmisten/valhalla-app.git
+git checkout self-hosted
 ```
 
 # Build the demo app
