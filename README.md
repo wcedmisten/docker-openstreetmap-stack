@@ -6,7 +6,9 @@ Currently running at https://map-demo.wcedmisten.dev
 
 ```
 git clone git@github.com:wcedmisten/valhalla-app.git
+cd valhalla-app
 git checkout self-hosted
+cd ..
 ```
 
 # Build the demo app
@@ -36,6 +38,12 @@ import-postgresql.conf is used for import. The main difference is that autovacuu
 run-postgresql.conf has it turned on. This config is tuned for my machine with 128 GB of RAM and 16 CPUs.
 
 # Pre-render tiles at low zoom
+You may want to expand the parameters used to include higher zoom levels.
+Increasing zoom levels will take exponentionally more time to render
+and more space to store, but will provide a better experience for the user.
+
+There are also better ways to render zoom levels that don't include 
+ocean tiles that should be used instead.
 
 ```
 docker exec -it tile-server bash
