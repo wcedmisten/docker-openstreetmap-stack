@@ -1,10 +1,13 @@
 #!/bin/bash
+set -eo pipefail
 
+echo "Creating docker volumes"
 docker volume create osm-data
 docker volume create osm-tiles
 docker volume create valhalla-data
 docker volume create nominatim-data
 
+echo "Importing data for tile server"
 docker run \
     -v $(pwd)/osm-pbf/region.osm.pbf:/data/region.osm.pbf \
     -v osm-data:/data/database/ \
@@ -14,6 +17,7 @@ docker run \
     overv/openstreetmap-tile-server \
     import
 
+echo "Importing data for valhalla"
 docker run \
     -v $(pwd)/osm-pbf/region.osm.pbf:/data/region.osm.pbf \
     -v $(pwd)/scripts:/scripts \
