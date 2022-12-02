@@ -45,7 +45,6 @@ services:
     container_name: maps-demo
     build:
       context: valhalla-app
-      dockerfile: demo.dockerfile
     ports: 
       - "8020:80"
 
