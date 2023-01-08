@@ -1,7 +1,5 @@
 Running a full valhalla demo entirely self hosted!
 
-Currently running at https://map-demo.wcedmisten.dev
-
 # Prerequisites
 
 Must have docker and docker compose installed.
